@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.guigu.dao.UserDao" >
+  <resultMap id="BaseResultMap" type="com.guigu.bean.User" >
+    <result column="ID" property="id" jdbcType="INTEGER" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="baseColumn">
+    ID, NAME
+  </sql>
+  <insert id="insert" parameterType="com.guigu.bean.User" >
+    insert into user (ID, NAME)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.guigu.bean.User" >
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateById" parameterType="com.guigu.bean.User" >
+    update user
+    set
+    NAME = #{name,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectById" parameterType="java.lang.Integer" resultType="com.guigu.bean.User">
+    select
+    <include refid="baseColumn"/>
+    from user
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+</mapper>
